@@ -83,21 +83,21 @@ __host__ __device__ static __inline__ double absolute(double x){return fabs(x);}
 #if (TARGET_SM >= 30)
 __device__ __inline__ float shfl(float x, int lane, int ws = 32)
 {
-  return __shfl(x, lane, ws);
+  return __shfl_sync(0xffffffff, x, lane, ws);
 }
 __device__ __inline__ double shfl(double x, int lane, int ws = 32)
 {
   // Split the double number into 2 32b registers.
   int lo = __double2loint(x), hi = __double2hiint(x);
   // Shuffle the two 32b registers.
-  lo = __shfl(lo, lane, ws);
-  hi = __shfl(hi, lane, ws);
+  lo = __shfl_sync(0xffffffff, lo, lane, ws);
+  hi = __shfl_sync(0xffffffff, hi, lane, ws);
   // Recreate the 64b number.
   return __hiloint2double(hi,lo);
 }
 __device__ __inline__ cuComplex shfl(cuComplex x, int lane, int ws = 32)
 {
-  return make_cuFloatComplex( __shfl(x.x, lane, ws), __shfl(x.y, lane, ws) );
+  return make_cuFloatComplex( __shfl_sync(0xffffffff, x.x, lane, ws), __shfl_sync(0xffffffff, x.y, lane, ws) );
 }
 __device__ __inline__ cuDoubleComplex shfl(cuDoubleComplex x, int lane, int ws = 32)
 {

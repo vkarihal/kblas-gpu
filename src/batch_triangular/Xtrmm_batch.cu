@@ -71,7 +71,19 @@ int Xtrmm_batch(kblasHandle_t handle,
       // Xset_pointer_2(dA_array, A, lda, strideA,
       //                dB_array, B, ldb, strideB,
       //                batchCount, handle->stream);
-
+//#if _MAGMA_VER_ == 2300
+//      magmablas_Xtrmm_batched_core(
+//            (magma_side_t)(side == KBLAS_Left ? MagmaLeft : MagmaRight),
+//            (magma_uplo_t)(uplo == KBLAS_Lower ? MagmaLower : MagmaUpper),
+//            (magma_trans_t)(MagmaNoTrans + (trans == KBLAS_Trans)),
+//            (magma_diag_t)(MagmaNonUnit + (diag == KBLAS_Unit)),
+//            m, n,
+//            alpha,
+//            (TYPE**)A, lda,
+//            (TYPE**)B, ldb,
+//            A_row_off, A_col_off, B_row_off, B_col_off,
+//            batchCount, handle->magma_queue );
+//#else 
       magmablas_Xtrmm_batched_core(
             (magma_side_t)(side == KBLAS_Left ? MagmaLeft : MagmaRight),
             (magma_uplo_t)(uplo == KBLAS_Lower ? MagmaLower : MagmaUpper),
@@ -79,10 +91,10 @@ int Xtrmm_batch(kblasHandle_t handle,
             (magma_diag_t)(MagmaNonUnit + (diag == KBLAS_Unit)),
             m, n,
             alpha,
-            (TYPE**)A, lda,
-            (TYPE**)B, ldb,
-            A_row_off, A_col_off, B_row_off, B_col_off,
+            (TYPE**)A, A_row_off, A_col_off, lda,
+            (TYPE**)B, B_row_off, B_col_off, ldb,
             batchCount, handle->magma_queue );
+//#endif
       return KBLAS_Success;
     }else
     #endif
@@ -175,6 +187,17 @@ int Xtrmm_batch(kblasHandle_t handle,
                      dB_array, B, ldb, strideB,
                      batchCount, handle->stream);
 
+//      magmablas_Xtrmm_batched_core(
+//            (magma_side_t)(side == KBLAS_Left ? MagmaLeft : MagmaRight),
+//            (magma_uplo_t)(uplo == KBLAS_Lower ? MagmaLower : MagmaUpper),
+//            (magma_trans_t)(MagmaNoTrans + (trans == KBLAS_Trans)),
+//            (magma_diag_t)(MagmaNonUnit + (diag == KBLAS_Unit)),
+//            m, n,
+//            alpha,
+//            dA_array, lda,
+//            dB_array, ldb,
+//            A_row_off, A_col_off, B_row_off, B_col_off,
+//            batchCount, handle->magma_queue );
       magmablas_Xtrmm_batched_core(
             (magma_side_t)(side == KBLAS_Left ? MagmaLeft : MagmaRight),
             (magma_uplo_t)(uplo == KBLAS_Lower ? MagmaLower : MagmaUpper),
@@ -182,10 +205,10 @@ int Xtrmm_batch(kblasHandle_t handle,
             (magma_diag_t)(MagmaNonUnit + (diag == KBLAS_Unit)),
             m, n,
             alpha,
-            dA_array, lda,
-            dB_array, ldb,
-            A_row_off, A_col_off, B_row_off, B_col_off,
+            (TYPE**)A, A_row_off, A_col_off, lda,
+            (TYPE**)B, B_row_off, B_col_off, ldb,
             batchCount, handle->magma_queue );
+
       return KBLAS_Success;
     }else
     #endif

@@ -14,8 +14,10 @@
 # @version 3.0.0
 # @author Ali Charara
 # @author Ahmad Abdelfattah
+# @author yuxi hong 2019-03-19
 # @date 2018-11-14
 #
+
 
 #-----------------------------------------
 _SUPPORT_BLAS2_?=TRUE
@@ -27,8 +29,8 @@ _SUPPORT_SVD_?=TRUE
 #_DEBUG_?=TRUE
 
 #-----------------------------------------
-_USE_MKL_?=TRUE
-#_USE_OPENBLAS_?=TRUE
+#_USE_MKL_?=TRUE
+_USE_OPENBLAS_?=TRUE
 
 #-----------------------------------------
 _USE_MAGMA_?=TRUE
@@ -75,7 +77,7 @@ endif
 #-----------------------------------------
 ifdef _USE_MAGMA_
   COPTS += -DUSE_MAGMA
-  _MAGMA_ROOT_?=$(HOME)/codes/magma-2.3.0
+  _MAGMA_ROOT_?=$(MAGMA_ROOT)
   NVOPTS += -DUSE_MAGMA
 endif
 

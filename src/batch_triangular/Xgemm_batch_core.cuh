@@ -195,16 +195,22 @@ int Xgemm_batch_uniform_core( kblasHandle_t handle,
     {
       int batch_size = kmin(batch_increment, batchCount - batch_start);
 
+//      magmablas_Xgemm_batched_core( (magma_trans_t)(MagmaNoTrans + (transA == KBLAS_Trans)),
+//                              (magma_trans_t)(MagmaNoTrans + (transB == KBLAS_Trans)),
+//                              m, n, k,
+//                              alpha, A, lda,
+//                                     B, ldb,
+//                              beta,  C, ldc,
+//                              A_row_off, A_col_off,
+//                              B_row_off, B_col_off,
+//                              C_row_off, C_col_off,
+//                              batchCount, handle->magma_queue);
       magmablas_Xgemm_batched_core( (magma_trans_t)(MagmaNoTrans + (transA == KBLAS_Trans)),
                               (magma_trans_t)(MagmaNoTrans + (transB == KBLAS_Trans)),
                               m, n, k,
-                              alpha, A, lda,
-                                     B, ldb,
-                              beta,  C, ldc,
-                              A_row_off, A_col_off,
-                              B_row_off, B_col_off,
-                              C_row_off, C_col_off,
-                              batchCount, handle->magma_queue);
+                              alpha, A, A_row_off, A_col_off, lda,
+                                     B, B_row_off, B_col_off, ldb,
+                              beta,  C, C_row_off, C_col_off, ldc, batchCount, handle->magma_queue);
 
       A += batch_size;
       B += batch_size;

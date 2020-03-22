@@ -1,2 +1,5 @@
 obj/
 bin/
+lib/
+testing/bin
+src/obj

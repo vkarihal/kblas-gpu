@@ -70,7 +70,7 @@ T blockAllReduceSum(T val, int warp_id, int warp_tid, T* temp_storage, int block
     // First do a reduction within each warp
     #pragma unroll
     for (int mask = WARP_SIZE / 2; mask > 0; mask /= 2)
-        val += __shfl_xor(val, mask);
+        val += __shfl_xor_sync(0xffffffff, val, mask);
 
     if(warps > 1)
     {
@@ -101,7 +101,7 @@ T blockAllReduceSum(T val, int warp_tid, int warp_id, volatile T* temp_storage)
     // First do a reduction within each warp
     #pragma unroll
     for (int mask = WARP_SIZE / 2; mask > 0; mask /= 2)
-        val += __shfl_xor(val, mask);
+        val += __shfl_xor_sync(0xffffffff, val, mask);
 
     if(warps > 1)
     {
@@ -129,7 +129,7 @@ T warpReduceSum(T val)
 {
     #pragma unroll
     for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2)
-        val += __shfl_down(val, offset);
+        val += __shfl_down_sync(0xffffffff, val, offset);
     return val;
 }
 
@@ -139,7 +139,7 @@ T warpAllReduceSum(T val)
 {
     #pragma unroll
     for (int mask = WARP_SIZE / 2; mask > 0; mask /= 2)
-        val += __shfl_xor(val, mask);
+        val += __shfl_xor_sync(0xffffffff, val, mask);
     return val;
 }
 
