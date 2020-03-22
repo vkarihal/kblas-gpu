@@ -15,7 +15,7 @@
 # @author Ali Charara
 # @author Ahmad Abdelfattah
 # @author yuxi hong 2019-03-19
-# @date 2018-11-14
+# @date 2020-03-22
 #
 
 
@@ -29,8 +29,8 @@ _SUPPORT_SVD_?=TRUE
 #_DEBUG_?=TRUE
 
 #-----------------------------------------
-#_USE_MKL_?=TRUE
-_USE_OPENBLAS_?=TRUE
+_USE_MKL_?=TRUE
+#_USE_OPENBLAS_?=TRUE
 
 #-----------------------------------------
 _USE_MAGMA_?=TRUE
@@ -81,6 +81,7 @@ ifdef _USE_MAGMA_
   NVOPTS += -DUSE_MAGMA
 endif
 
+
 #-----------------------------------------
 ifdef _SUPPORT_BLAS2_
   # specify the gpu architecture for BLAS2 routines (fermi, kepler)
@@ -104,8 +105,9 @@ endif
 
 #-----------------------------------------
 ifdef _USE_OPENBLAS_
-  COPTS += -DUSE_OPENBLAS
-  NVOPTS += -DUSE_OPENBLAS
+  COPTS += -DUSE_OPENBLAS 
+  NVOPTS += -DUSE_OPENBLAS 
+
 
   OPENBLAS_INCLUDE?=${OPENBLAS_ROOT}/include
   OPENBLAS_LIB?=${OPENBLAS_ROOT}/lib
