@@ -1,8 +1,8 @@
 .PHONY: all clean
 
 all:
-	(cd src && make -j12)
-	(cd testing && make -j12)
+	(cd src && make -j1)
+	(cd testing && make -j1)
 
 clean:
 	rm -f -v ./lib/*.a
